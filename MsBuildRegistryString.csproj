@@ -74,6 +74,8 @@
     <PropertyGroup>
       <MsBuildNativeProductId>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion@ProductId)</MsBuildNativeProductId>
       <MsBuildNativeProductName>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion@ProductName)</MsBuildNativeProductName>
+      <MsBuild4NativeProductId>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion', 'ProductId', null, RegistryView.Registry64))</MsBuild4NativeProductId>
+      <MsBuild4NativeProductName>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion', 'ProductName', null, RegistryView.Registry64))</MsBuild4NativeProductName>
     </PropertyGroup>
     <!-- Lets use the MSBuild Extension Pack (still no joy) http://www.msbuildextensionpack.com/help/4.0.5.0/html/9c8ecf24-3d8d-2b2d-e986-3e026dda95fe.htm -->
     <MSBuild.ExtensionPack.Computer.Registry TaskAction="Get" RegistryHive="LocalMachine" Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion" Value="ProductId">
@@ -91,6 +93,7 @@
     </MSBuild.ExtensionPack.Computer.Registry>
     <!-- All messages are of high importance so Visual Studio will display them by default. See: http://stackoverflow.com/questions/7557562/how-do-i-get-the-message-msbuild-task-that-shows-up-in-the-visual-studio-proje -->
     <Message Importance="High" Text="Using Msbuild Native: ProductId: $(MsBuildNativeProductId) ProductName: $(MsBuildNativeProductName)"/>
+    <Message Importance="High" Text="Using Msbuild v4  Native: ProductId: $(MsBuild4NativeProductId) ProductName: $(MsBuild4NativeProductName)"/>
     <Message Importance="High" Text="Using Msbuild Extension Pack: ProductId: $(MsBuildExtProductId) ProductName: $(MsBuildExtProductName)"/>
     <Message Importance="High" Text="Using Msbuild Extension Pack: ProductId: $(MsBuildExt64ProductId) ProductName: $(MsBuildExt64ProductName)"/>
   </Target>
