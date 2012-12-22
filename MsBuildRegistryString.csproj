@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -68,7 +70,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\MSBuild.Extension.Pack.1.1.0\lib\net40\MSBuild.ExtensionPack.tasks" />
+  <Import Project="packages\MSBuild.Extension.Pack.1.1.0\lib\net40\MSBuild.ExtensionPack.tasks" />
   <Target Name="BeforeBuild">
     <!-- Read the registry using the native MSBUILD 3.5 method: http://blogs.msdn.com/b/msbuild/archive/2007/05/04/new-registry-syntax-in-msbuild-v3-5.aspx -->
     <PropertyGroup>
@@ -79,24 +81,25 @@
     </PropertyGroup>
     <!-- Lets use the MSBuild Extension Pack (still no joy) http://www.msbuildextensionpack.com/help/4.0.5.0/html/9c8ecf24-3d8d-2b2d-e986-3e026dda95fe.htm -->
     <MSBuild.ExtensionPack.Computer.Registry TaskAction="Get" RegistryHive="LocalMachine" Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion" Value="ProductId">
-      <Output PropertyName="MsBuildExtProductId" TaskParameter="Data"/>
+      <Output PropertyName="MsBuildExtProductId" TaskParameter="Data" />
     </MSBuild.ExtensionPack.Computer.Registry>
     <MSBuild.ExtensionPack.Computer.Registry TaskAction="Get" RegistryHive="LocalMachine" Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion" Value="ProductName">
-      <Output PropertyName="MsBuildExtProductName" TaskParameter="Data"/>
+      <Output PropertyName="MsBuildExtProductName" TaskParameter="Data" />
     </MSBuild.ExtensionPack.Computer.Registry>
     <!-- And now RegistryView: http://msdn.microsoft.com/en-us/library/microsoft.win32.registryview.aspx -->
     <MSBuild.ExtensionPack.Computer.Registry TaskAction="Get" RegistryHive="LocalMachine" Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion" Value="ProductId" RegistryView="Registry64">
-      <Output PropertyName="MsBuildExt64ProductId" TaskParameter="Data"/>
+      <Output PropertyName="MsBuildExt64ProductId" TaskParameter="Data" />
     </MSBuild.ExtensionPack.Computer.Registry>
     <MSBuild.ExtensionPack.Computer.Registry TaskAction="Get" RegistryHive="LocalMachine" Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion" Value="ProductName" RegistryView="Registry64">
-      <Output PropertyName="MsBuildExt64ProductName" TaskParameter="Data"/>
+      <Output PropertyName="MsBuildExt64ProductName" TaskParameter="Data" />
     </MSBuild.ExtensionPack.Computer.Registry>
     <!-- All messages are of high importance so Visual Studio will display them by default. See: http://stackoverflow.com/questions/7557562/how-do-i-get-the-message-msbuild-task-that-shows-up-in-the-visual-studio-proje -->
-    <Message Importance="High" Text="Using Msbuild Native: ProductId: $(MsBuildNativeProductId) ProductName: $(MsBuildNativeProductName)"/>
-    <Message Importance="High" Text="Using Msbuild v4  Native: ProductId: $(MsBuild4NativeProductId) ProductName: $(MsBuild4NativeProductName)"/>
-    <Message Importance="High" Text="Using Msbuild Extension Pack: ProductId: $(MsBuildExtProductId) ProductName: $(MsBuildExtProductName)"/>
-    <Message Importance="High" Text="Using Msbuild Extension Pack: ProductId: $(MsBuildExt64ProductId) ProductName: $(MsBuildExt64ProductName)"/>
+    <Message Importance="High" Text="Using Msbuild Native: ProductId: $(MsBuildNativeProductId) ProductName: $(MsBuildNativeProductName)" />
+    <Message Importance="High" Text="Using Msbuild v4  Native: ProductId: $(MsBuild4NativeProductId) ProductName: $(MsBuild4NativeProductName)" />
+    <Message Importance="High" Text="Using Msbuild Extension Pack: ProductId: $(MsBuildExtProductId) ProductName: $(MsBuildExtProductName)" />
+    <Message Importance="High" Text="Using Msbuild Extension Pack: ProductId: $(MsBuildExt64ProductId) ProductName: $(MsBuildExt64ProductName)" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!--
   <Target Name="AfterBuild">
   </Target>
